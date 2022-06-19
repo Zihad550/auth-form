@@ -8,11 +8,29 @@
     <label>Password:</label>
     <input type="password" required v-model="password" />
 
+    <p v-if="passwordError" class="password-error-msg">
+      6 to 12 character and one special character and one number
+    </p>
+
     <!-- skill -->
-    <label>Skill:</label>
+    <div class="skill-label-wrapper">
+      <label>Skill:</label
+      ><img
+        title="type skill name then press 'alt + ,' to add skill"
+        class="alert-img"
+        src="../assets/alert.png"
+        alt=""
+      />
+    </div>
     <input type="text" v-model="skill" @keyup.alt="handleAddSkill" />
+
     <div class="skills-wrapper">
-      <p v-for="skill in skills" :key="skill" class="pill">
+      <p
+        @click="handleRemoveSkill(skill)"
+        v-for="skill in skills"
+        :key="skill"
+        class="pill"
+      >
         {{ skill }}
       </p>
     </div>
@@ -31,7 +49,7 @@
   <p>Email: {{ email }}</p>
   <p>Password: {{ password }}</p>
   <p>Role: {{ role }}</p>
-  <p>Skill: {{ skill }}</p>
+  <p>Skills: {{ skills }}</p>
 </template>
 
 <script>
@@ -43,21 +61,32 @@ export default {
       password: "",
       role: "developer",
       skill: "",
-      skills: ["html", "css", "vue"],
+      skills: [],
+      passwordError: false,
     };
   },
 
   methods: {
     handleAddSkill(e) {
-      console.log(e);
-
-      if (e.key === ",") {
+      if (e.key === "," && this.skill && !this.skills.includes(this.skill)) {
         this.skills.push(this.skill);
       }
       this.skill = "";
     },
+    handleRemoveSkill(skill) {
+      this.skills = this.skills.filter((item) => skill !== item);
+    },
     handleSubmit() {
-      console.log(this.email, this.password);
+      const regularExpression =
+        /^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,16}$/;
+
+      if (!regularExpression.test(this.password)) {
+        this.passwordError = true;
+        return;
+      }
+      this.passwordError = false;
+      console.log(this.email, this.password, this.skills, this.role);
+      alert("Sign up successful!!");
     },
   },
 };
@@ -79,7 +108,7 @@ label {
   color: #aaa;
   display: inline-block;
   margin: 25px 0 15px;
-  font-size: 0.6em;
+  font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
@@ -106,6 +135,20 @@ button[type="submit"] {
   color: white;
   border-radius: 18px;
   cursor: pointer;
+  margin-top: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.skill-label-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alert-img {
+  width: 12px;
+  margin-left: 2px;
+  margin-top: 10px;
 }
 
 .skills-wrapper {
@@ -117,5 +160,10 @@ button[type="submit"] {
   padding: 5px 10px;
   border-radius: 15px;
   margin: 5px;
+}
+
+.password-error-msg {
+  color: red;
+  font-size: small;
 }
 </style>

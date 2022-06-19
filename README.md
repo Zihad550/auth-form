@@ -1,19 +1,11 @@
-# auth-form
+# Auth Form
 
-## Project setup
-```
-yarn install
-```
+Live website [Authentication Form]()
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+It is a basic vue.js authentication form.
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## features
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Basic password validation.
+- Can add multiple skills, Write skill name and then press `alt + ,` to add the skill.
+- Can delete added skill by clicking them.
